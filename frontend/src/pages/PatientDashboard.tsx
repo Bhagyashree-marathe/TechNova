@@ -4,6 +4,8 @@ import MedicalTimeline from "./MedicalTimeline"
 import PatientQRCode from "./PatientQRCode"
 import ShareConsent from "./ShareConsent"
 import EmergencyAccess from "./EmergencyAccess"
+import PatientProfile from "./PatientProfile"
+import AuditLog from "./AuditLog"
 
 function PatientDashboard() {
   const [showHealthSummary, setShowHealthSummary] = useState(false)
@@ -11,6 +13,8 @@ function PatientDashboard() {
   const [showPatientQRCode, setShowPatientQRCode] = useState(false)
   const [showShareConsent, setShowShareConsent] = useState(false)
   const [showEmergencyAccess, setShowEmergencyAccess] = useState(false)
+  const [showPatientProfile, setShowPatientProfile] = useState(false)
+  const [showAuditLog, setShowAuditLog] = useState(false)
 
   // Open Health Summary
   if (showHealthSummary) {
@@ -56,6 +60,20 @@ function PatientDashboard() {
       />
     )
   }
+  if (showPatientProfile) {
+  return (
+    <PatientProfile
+      onBack={() => setShowPatientProfile(false)}
+    />
+  )
+}
+if (showAuditLog) {
+  return (
+    <AuditLog
+      onBack={() => setShowAuditLog(false)}
+    />
+  )
+}
 
   return (
     <div className="min-h-screen bg-slate-100 flex justify-center">
@@ -385,6 +403,44 @@ function PatientDashboard() {
             </button>
 
           </section>
+          {/* ================= AUDIT LOG ================= */}
+<section className="mt-5">
+
+  <button
+    type="button"
+    onClick={() => setShowAuditLog(true)}
+    className="w-full rounded-2xl bg-white p-4 text-left border border-slate-100 shadow-sm hover:border-blue-200 transition"
+  >
+
+    <div className="flex items-center gap-3">
+
+      <div className="w-11 h-11 rounded-xl bg-purple-100 flex items-center justify-center">
+        <span className="text-lg">
+          📋
+        </span>
+      </div>
+
+      <div className="flex-1">
+
+        <p className="text-sm font-semibold text-slate-900">
+          Audit Log
+        </p>
+
+        <p className="mt-1 text-xs text-slate-500">
+          View who accessed your health information
+        </p>
+
+      </div>
+
+      <span className="text-purple-600">
+        →
+      </span>
+
+    </div>
+
+  </button>
+
+</section>
 
 
           {/* Recent Activity */}
@@ -518,10 +574,12 @@ function PatientDashboard() {
 
 
             {/* Profile */}
-            <button
-              type="button"
+          
+          <button
+            type="button"
+            onClick={() => setShowPatientProfile(true)}
               className="flex flex-col items-center gap-1 text-slate-400"
-            >
+>
 
               <span className="text-lg">
                 ●

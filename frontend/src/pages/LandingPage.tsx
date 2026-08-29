@@ -1,28 +1,40 @@
+
 import { useState } from "react"
 import RegisterPage from "./RegisterPage"
 import LoginPage from "./LoginPage"
-import DoctorDashboard from "./DoctorDashboard"
+import DoctorLogin from "./DoctorLogin"
+import EmergencyAccess from "./EmergencyAccess"
 
 function LandingPage() {
   const [showRegister, setShowRegister] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
-  const [showDoctorDashboard, setShowDoctorDashboard] = useState(false)
+  const [showDoctorLogin, setShowDoctorLogin] = useState(false)
+  const [showEmergencyAccess, setShowEmergencyAccess] = useState(false)
 
   // ================= REGISTER PAGE =================
   if (showRegister) {
     return <RegisterPage />
   }
 
-  // ================= LOGIN PAGE =================
+  // ================= PATIENT LOGIN =================
   if (showLogin) {
     return <LoginPage />
   }
 
-  // ================= DOCTOR DASHBOARD =================
-  if (showDoctorDashboard) {
+  // ================= DOCTOR LOGIN =================
+  if (showDoctorLogin) {
     return (
-      <DoctorDashboard
-        onBack={() => setShowDoctorDashboard(false)}
+      <DoctorLogin
+        onBack={() => setShowDoctorLogin(false)}
+      />
+    )
+  }
+
+  // ================= EMERGENCY ACCESS =================
+  if (showEmergencyAccess) {
+    return (
+      <EmergencyAccess
+        onBack={() => setShowEmergencyAccess(false)}
       />
     )
   }
@@ -69,13 +81,11 @@ function LandingPage() {
 
           </div>
 
-
           {/* Menu */}
           <button
             type="button"
             className="text-slate-700"
           >
-
             <svg
               viewBox="0 0 24 24"
               className="w-7 h-7"
@@ -85,7 +95,6 @@ function LandingPage() {
             >
               <path d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-
           </button>
 
         </header>
@@ -98,7 +107,6 @@ function LandingPage() {
           <section>
 
             <h2 className="text-3xl font-bold leading-[1.15] text-slate-900">
-
               Your Health.
               <br />
 
@@ -113,7 +121,6 @@ function LandingPage() {
               <span className="text-blue-600">
                 Control.
               </span>
-
             </h2>
 
             <p className="mt-4 text-sm leading-6 text-slate-500">
@@ -130,11 +137,8 @@ function LandingPage() {
 
             {/* Decorative dots */}
             <div className="absolute top-5 left-8 w-2 h-2 rounded-full bg-blue-300" />
-
             <div className="absolute top-10 right-10 w-2 h-2 rounded-full bg-blue-300" />
-
             <div className="absolute bottom-8 left-16 w-3 h-3 rounded-full bg-blue-200" />
-
 
             {/* Decorative plus */}
             <span className="absolute top-7 left-1/2 text-2xl font-light text-blue-300">
@@ -145,12 +149,10 @@ function LandingPage() {
               +
             </span>
 
-
             {/* Connection Circle */}
             <div className="absolute left-1/2 top-8 -translate-x-1/2 w-44 h-44 rounded-full border-2 border-dashed border-blue-300" />
 
-
-            {/* ================= LOCK ================= */}
+            {/* LOCK */}
             <div className="absolute top-3 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-white border-2 border-blue-200 shadow-sm flex items-center justify-center z-10">
 
               <svg
@@ -174,7 +176,7 @@ function LandingPage() {
             </div>
 
 
-            {/* ================= PEOPLE ================= */}
+            {/* PEOPLE */}
             <div className="absolute left-6 top-16 w-12 h-12 rounded-full bg-white border border-blue-200 shadow-sm flex items-center justify-center">
 
               <svg
@@ -200,7 +202,7 @@ function LandingPage() {
             </div>
 
 
-            {/* ================= HEART ================= */}
+            {/* HEART */}
             <div className="absolute right-6 top-16 w-12 h-12 rounded-full bg-white border border-blue-200 shadow-sm flex items-center justify-center">
 
               <svg
@@ -222,7 +224,7 @@ function LandingPage() {
             </div>
 
 
-            {/* ================= MEDICAL RECORD ================= */}
+            {/* MEDICAL RECORD */}
             <div className="absolute left-5 bottom-7 w-20 h-24 rounded-lg bg-white border-2 border-slate-300 shadow-md rotate-[-5deg]">
 
               <div className="absolute -top-3 left-6 w-8 h-5 rounded-md bg-slate-300" />
@@ -236,13 +238,9 @@ function LandingPage() {
                 </div>
 
                 <div className="space-y-1">
-
                   <div className="h-1.5 w-11 bg-slate-200 rounded" />
-
                   <div className="h-1.5 w-9 bg-slate-200 rounded" />
-
                   <div className="h-1.5 w-12 bg-slate-200 rounded" />
-
                 </div>
 
                 <div className="mt-2 space-y-1">
@@ -270,7 +268,7 @@ function LandingPage() {
             </div>
 
 
-            {/* ================= STETHOSCOPE ================= */}
+            {/* STETHOSCOPE */}
             <div className="absolute right-3 bottom-4 w-24 h-24">
 
               <svg
@@ -308,7 +306,7 @@ function LandingPage() {
             </div>
 
 
-            {/* ================= PHONE ================= */}
+            {/* PHONE */}
             <div className="absolute left-1/2 bottom-[-12px] -translate-x-1/2 w-52 h-28 rounded-[24px] border-4 border-slate-700 bg-white shadow-xl rotate-[-2deg]">
 
               <div className="absolute inset-2 rounded-[17px] bg-blue-50 overflow-hidden">
@@ -324,7 +322,6 @@ function LandingPage() {
                 <div className="absolute top-6 left-16 space-y-1">
 
                   <div className="h-2 w-20 bg-blue-200 rounded" />
-
                   <div className="h-1.5 w-14 bg-blue-100 rounded" />
 
                 </div>
@@ -350,7 +347,7 @@ function LandingPage() {
             </div>
 
 
-            {/* ================= MAIN SHIELD ================= */}
+            {/* MAIN SHIELD */}
             <div className="absolute left-1/2 top-[92px] -translate-x-1/2 z-20">
 
               <svg
@@ -427,7 +424,7 @@ function LandingPage() {
           {/* ================= DOCTOR ================= */}
           <button
             type="button"
-            onClick={() => setShowDoctorDashboard(true)}
+            onClick={() => setShowDoctorLogin(true)}
             className="w-full mt-3 border-2 border-blue-600 text-blue-600 font-semibold py-4 rounded-xl hover:bg-blue-50 transition active:scale-[0.98]"
           >
             I'm a Doctor
@@ -455,6 +452,7 @@ function LandingPage() {
           {/* ================= EMERGENCY ================= */}
           <button
             type="button"
+            onClick={() => setShowEmergencyAccess(true)}
             className="w-full mt-6 flex items-center justify-between rounded-xl bg-red-50 border border-red-200 px-4 py-3.5 text-red-600"
           >
 
@@ -471,11 +469,8 @@ function LandingPage() {
                 >
 
                   <path d="M12 3v8" />
-
                   <path d="M7 6a7 7 0 1 0 10 0" />
-
                   <path d="M9 20h6" />
-
                   <path d="M10 17h4" />
 
                 </svg>
@@ -529,3 +524,4 @@ function LandingPage() {
 }
 
 export default LandingPage
+
