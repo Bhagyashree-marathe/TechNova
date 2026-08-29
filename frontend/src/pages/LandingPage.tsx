@@ -1,7 +1,7 @@
 
 import { useState } from "react"
 import RegisterPage from "./RegisterPage"
-import LoginPage from "./Loginpage"
+import LoginPage from "./LoginPage"
 import DoctorLogin from "./DoctorLogin"
 import EmergencyAccess from "./EmergencyAccess"
 

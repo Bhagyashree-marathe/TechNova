@@ -1,13 +1,16 @@
-
 import { useState } from "react"
 import DoctorDashboard from "./DoctorDashboard"
 
-function DoctorLogin() {
+type DoctorLoginProps = {
+  onBack: () => void
+}
+
+function DoctorLogin({ onBack }: DoctorLoginProps) {
   const [doctorId, setDoctorId] = useState("")
   const [password, setPassword] = useState("")
   const [showDashboard, setShowDashboard] = useState(false)
 
-  // After successful login
+  // Show Doctor Dashboard after login
   if (showDashboard) {
     return (
       <DoctorDashboard
@@ -17,30 +20,26 @@ function DoctorLogin() {
   }
 
   const handleLogin = () => {
-    if (!doctorId || !password) {
+    if (!doctorId.trim() || !password.trim()) {
       alert("Please enter Doctor ID and Password")
       return
     }
 
-    // Temporary login for prototype
-    // Later this will be connected to backend API
+    // Temporary prototype login
     setShowDashboard(true)
   }
 
   return (
     <div className="min-h-screen bg-slate-100 flex justify-center">
-
-      {/* Mobile App Container */}
       <div className="w-full max-w-md min-h-screen bg-white shadow-xl">
 
         {/* Header */}
         <header className="px-5 py-4 border-b border-slate-100">
-
           <div className="flex items-center gap-3">
 
             <button
               type="button"
-              onClick={() => window.history.back()}
+              onClick={onBack}
               className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600"
             >
               ←
@@ -57,7 +56,6 @@ function DoctorLogin() {
             </div>
 
           </div>
-
         </header>
 
         {/* Main */}
@@ -65,7 +63,6 @@ function DoctorLogin() {
 
           {/* Doctor Icon */}
           <div className="flex justify-center mb-6">
-
             <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center">
 
               <svg
@@ -80,11 +77,10 @@ function DoctorLogin() {
               </svg>
 
             </div>
-
           </div>
 
+          {/* Title */}
           <div className="text-center mb-8">
-
             <h2 className="text-2xl font-bold text-slate-900">
               Welcome, Doctor
             </h2>
@@ -92,12 +88,10 @@ function DoctorLogin() {
             <p className="mt-2 text-sm text-slate-500">
               Login to securely access patient health records
             </p>
-
           </div>
 
           {/* Doctor ID */}
           <div className="mb-5">
-
             <label className="block text-sm font-semibold text-slate-700 mb-2">
               Doctor ID / Registration Number
             </label>
@@ -109,12 +103,10 @@ function DoctorLogin() {
               placeholder="Enter Doctor ID"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
-
           </div>
 
           {/* Password */}
           <div className="mb-3">
-
             <label className="block text-sm font-semibold text-slate-700 mb-2">
               Password
             </label>
@@ -126,19 +118,16 @@ function DoctorLogin() {
               placeholder="Enter password"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
-
           </div>
 
           {/* Forgot Password */}
           <div className="text-right mb-7">
-
             <button
               type="button"
               className="text-sm font-semibold text-blue-600"
             >
               Forgot Password?
             </button>
-
           </div>
 
           {/* Login */}
@@ -152,7 +141,6 @@ function DoctorLogin() {
 
           {/* Security */}
           <div className="mt-7 rounded-xl bg-blue-50 border border-blue-100 p-4">
-
             <p className="text-sm font-semibold text-blue-700">
               🔒 Secure Access
             </p>
@@ -161,13 +149,11 @@ function DoctorLogin() {
               Patient information is accessible only to authorized
               healthcare professionals.
             </p>
-
           </div>
 
         </main>
 
       </div>
-
     </div>
   )
 }
