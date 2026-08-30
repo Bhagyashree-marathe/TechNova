@@ -1,5 +1,5 @@
-const Consent = require("../models/Consent");
-const Doctor = require("../models/Doctor");
+const Consent = require("../models/consent");
+const Doctor = require("../models/doctor");
 
 
 // =====================================
