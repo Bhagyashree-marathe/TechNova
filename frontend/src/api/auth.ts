@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5000/api"
+const API_BASE_URL = "https://technova-1-h8od.onrender.com/api"
 
 export async function loginPatient(
   identifier: string,
