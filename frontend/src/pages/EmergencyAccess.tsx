@@ -7,27 +7,54 @@ type EmergencyAccessProps = {
 
 function EmergencyAccess({ onBack }: EmergencyAccessProps) {
   const [healthId, setHealthId] = useState("")
+  const [reason, setReason] = useState("")
   const [showPatientInfo, setShowPatientInfo] = useState(false)
+  const [emergencyData, setEmergencyData] = useState<any>(null)
 
-  const patient = {
-    name: "Aarav Sharma",
-    healthId: "JEEVAN-2026-001",
-    bloodGroup: "O+",
-    allergies: "No known allergies",
-    medications: "None",
-    emergencyContact: "+91 XXXXX XXXXX",
-  }
+  
 
   // ================= VERIFY HEALTH ID =================
-  const handleAccess = () => {
-    if (!healthId.trim()) {
-      alert("Please enter Health ID")
+ // ================= VERIFY HEALTH ID =================
+const handleAccess = async () => {
+  if (!healthId.trim()) {
+    alert("Please enter Health ID")
+    return
+  }
+
+  if (!reason.trim()) {
+    alert("Please enter the emergency reason")
+    return
+  }
+
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/emergency/access",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          healthId: healthId.trim(),
+          reason: reason.trim(),
+        }),
+      }
+    )
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      alert(data.message || "Invalid Health ID")
       return
     }
 
-    // Prototype verification
+    setEmergencyData(data.emergencyData)
     setShowPatientInfo(true)
+  } catch (error) {
+    console.error("Emergency access error:", error)
+    alert("Unable to connect to the server")
   }
+}
 
   // ================= CRITICAL INFORMATION =================
   if (showPatientInfo) {
@@ -115,7 +142,7 @@ function EmergencyAccess({ onBack }: EmergencyAccessProps) {
                   </span>
 
                   <span className="text-sm font-semibold text-slate-900">
-                    {patient.name}
+                    {emergencyData?.fullName}
                   </span>
 
                 </div>
@@ -127,7 +154,7 @@ function EmergencyAccess({ onBack }: EmergencyAccessProps) {
                   </span>
 
                   <span className="text-sm font-semibold text-blue-700">
-                    {patient.healthId}
+                    {emergencyData?.healthId}
                   </span>
 
                 </div>
@@ -162,7 +189,7 @@ function EmergencyAccess({ onBack }: EmergencyAccessProps) {
                   </p>
 
                   <p className="mt-1 text-lg font-bold text-red-600">
-                    {patient.bloodGroup}
+                    {emergencyData?.bloodGroup || "Not available"}
                   </p>
 
                 </div>
@@ -184,7 +211,7 @@ function EmergencyAccess({ onBack }: EmergencyAccessProps) {
                   </p>
 
                   <p className="mt-1 text-sm font-semibold text-slate-800">
-                    {patient.allergies}
+                    {emergencyData?.allergies || "No known allergies"}
                   </p>
 
                 </div>
@@ -204,7 +231,7 @@ function EmergencyAccess({ onBack }: EmergencyAccessProps) {
               <div className="mt-3 rounded-xl bg-blue-50 p-4">
 
                 <p className="text-sm text-blue-800">
-                  💊 {patient.medications}
+                  💊 {emergencyData?.currentMedications || "None"}
                 </p>
 
               </div>
@@ -228,7 +255,7 @@ function EmergencyAccess({ onBack }: EmergencyAccessProps) {
                   </p>
 
                   <p className="mt-1 font-semibold text-slate-900">
-                    {patient.emergencyContact}
+                    {emergencyData?.emergencyContact?.name} ({emergencyData?.emergencyContact?.relation}) - {emergencyData?.emergencyContact?.phone}
                   </p>
 
                 </div>
@@ -373,6 +400,17 @@ function EmergencyAccess({ onBack }: EmergencyAccessProps) {
               placeholder="e.g. JEEVAN-2026-001"
               className="w-full mt-2 px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
             />
+            <label className="block mt-5 text-sm font-semibold text-slate-700">
+  Emergency Reason
+</label>
+
+<input
+  type="text"
+  value={reason}
+  onChange={(e) => setReason(e.target.value)}
+  placeholder="e.g. Emergency medical treatment"
+  className="w-full mt-2 px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100"
+/>
 
 
             <button
@@ -422,4 +460,6 @@ function EmergencyAccess({ onBack }: EmergencyAccessProps) {
 }
 
 export default EmergencyAccess
+
+
 

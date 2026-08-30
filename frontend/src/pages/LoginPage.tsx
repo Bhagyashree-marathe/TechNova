@@ -1,10 +1,40 @@
 import { useState } from "react"
+import { loginPatient } from "../api/auth"
 import RegisterPage from "./RegisterPage"
 import PatientDashboard from "./PatientDashboard"
 
 function LoginPage() {
   const [showRegister, setShowRegister] = useState(false)
   const [showDashboard, setShowDashboard] = useState(false)
+  const [identifier, setIdentifier] = useState("")
+  const [password, setPassword] = useState("")
+  const [loginError, setLoginError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const handleLogin = async () => {
+  setLoginError("")
+
+  if (!identifier.trim() || !password.trim()) {
+    setLoginError("Please enter your Health ID/mobile number and password")
+    return
+  }
+
+  try {
+    setIsLoading(true)
+
+    const data = await loginPatient(identifier, password)
+
+    localStorage.setItem("token", data.token)
+    localStorage.setItem("patient", JSON.stringify(data.patient))
+
+    setShowDashboard(true)
+  } catch (error) {
+    setLoginError(
+      error instanceof Error ? error.message : "Login failed"
+    )
+  } finally {
+    setIsLoading(false)
+  }
+}
 
   // Open Register Page
   if (showRegister) {
@@ -98,6 +128,7 @@ function LoginPage() {
               <input
                 type="text"
                 placeholder="Enter Health ID or mobile number"
+                value={identifier}onChange={(e) => setIdentifier(e.target.value)}
                 className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
 
@@ -125,6 +156,7 @@ function LoginPage() {
               <input
                 type="password"
                 placeholder="Enter your password"
+                value={password}onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
 
@@ -144,15 +176,21 @@ function LoginPage() {
               </span>
 
             </label>
+            {loginError && (
+            <p className="text-sm text-red-600">
+            {loginError}
+             </p>
+            )}
+
 
 
             {/* ================= LOGIN BUTTON ================= */}
             <button
               type="button"
-              onClick={() => setShowDashboard(true)}
+              onClick={handleLogin}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-xl shadow-md transition active:scale-[0.98]"
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </button>
 
           </form>

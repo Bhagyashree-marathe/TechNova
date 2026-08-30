@@ -1,8 +1,57 @@
 import { useState } from "react"
+import type { FormEvent } from "react"
 import LoginPage from "./LoginPage"
 
 function RegisterPage() {
   const [showLogin, setShowLogin] = useState(false)
+    const [formData, setFormData] = useState({
+    fullName: "",
+    dateOfBirth: "",
+    gender: "",
+    mobile: "",
+    email: "",
+    password: "",
+    emergencyContact: {
+    name: "",
+    relation: "",
+    phone: "",
+    },
+      })
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
+  const handleRegister = async (e: FormEvent) => {
+  e.preventDefault()
+  setError("")
+  setIsLoading(true)
+    try {
+    const response = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      setError(data.message || "Registration failed")
+      return
+    }
+
+    alert(`Health ID created successfully: ${data.patient.healthId}`)
+    setShowLogin(true)
+  } catch (error) {
+    console.error("Registration error:", error)
+    setError("Unable to connect to the server")
+  } finally {
+    setIsLoading(false)
+  }
+}
+
+ 
+
 
   if (showLogin) {
     return <LoginPage />
@@ -68,7 +117,12 @@ function RegisterPage() {
 
 
           {/* Registration Form */}
-          <form className="space-y-5">
+          {error && (
+          <div className="mb-4 rounded-xl bg-red-50 border border-red-200 p-3 text-sm text-red-600">
+            {error}
+          </div>
+        )}
+          <form className="space-y-5" onSubmit={handleRegister}>
 
 
             {/* Full Name */}
@@ -81,6 +135,10 @@ function RegisterPage() {
               <input
                 type="text"
                 placeholder="Enter your full name"
+                value={formData.fullName}
+                onChange={(e) =>
+                setFormData({ ...formData, fullName: e.target.value })
+              }
                 className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
 
@@ -96,6 +154,11 @@ function RegisterPage() {
 
               <input
                 type="date"
+                value={formData.dateOfBirth}
+                onChange={(e) =>
+                  setFormData({ ...formData, dateOfBirth: e.target.value })
+                }
+                
                 className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
 
@@ -109,22 +172,28 @@ function RegisterPage() {
                 Gender
               </label>
 
+              
               <select
+              value={formData.gender}
+              onChange={(e) =>
+                setFormData({ ...formData, gender: e.target.value })
+              }
+            
                 className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               >
                 <option value="">
                   Select gender
                 </option>
 
-                <option value="male">
+                <option value="Male">
                   Male
                 </option>
 
-                <option value="female">
+                <option value="Female">
                   Female
                 </option>
 
-                <option value="other">
+                <option value="Other">
                   Other
                 </option>
 
@@ -147,6 +216,10 @@ function RegisterPage() {
               <input
                 type="tel"
                 placeholder="Enter mobile number"
+                value={formData.mobile}
+                onChange={(e) =>
+                  setFormData({ ...formData, mobile: e.target.value })
+                }
                 className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
 
@@ -163,6 +236,10 @@ function RegisterPage() {
               <input
                 type="email"
                 placeholder="Enter email address"
+                value={formData.email}
+                onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
                 className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
 
@@ -179,6 +256,10 @@ function RegisterPage() {
               <input
                 type="password"
                 placeholder="Create a strong password"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
 
@@ -190,19 +271,69 @@ function RegisterPage() {
 
 
             {/* Emergency Contact */}
-            <div>
+           <div>
 
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Emergency Contact
-              </label>
+  <label className="block text-sm font-semibold text-slate-700 mb-2">
+    Emergency Contact Name
+  </label>
 
-              <input
-                type="tel"
-                placeholder="Emergency contact number"
-                className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-              />
+  <input
+    type="text"
+    placeholder="Enter contact name"
+    value={formData.emergencyContact.name}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        emergencyContact: {
+          ...formData.emergencyContact,
+          name: e.target.value,
+        },
+      })
+    }
+    className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+  />
 
-            </div>
+  <label className="block text-sm font-semibold text-slate-700 mb-2 mt-4">
+    Relationship
+  </label>
+
+  <input
+    type="text"
+    placeholder="e.g. Guardian, Parent"
+    value={formData.emergencyContact.relation}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        emergencyContact: {
+          ...formData.emergencyContact,
+          relation: e.target.value,
+        },
+      })
+    }
+    className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+  />
+
+  <label className="block text-sm font-semibold text-slate-700 mb-2 mt-4">
+    Emergency Contact Number
+  </label>
+
+  <input
+    type="tel"
+    placeholder="Emergency contact number"
+    value={formData.emergencyContact.phone}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        emergencyContact: {
+          ...formData.emergencyContact,
+          phone: e.target.value,
+        },
+      })
+    }
+    className="w-full px-4 py-3.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+  />
+
+</div>
 
 
             {/* Consent */}
@@ -229,9 +360,10 @@ function RegisterPage() {
             {/* Register Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-xl shadow-md transition active:scale-[0.98]"
+              disabled={isLoading}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-xl shadow-md transition active:scale-[0.98] disabled:opacity-50"
             >
-              Create Health ID
+              {isLoading ? "Creating Health ID..." : "Create Health ID"}
             </button>
 
 
