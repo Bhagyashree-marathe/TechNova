@@ -1,10 +1,10 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const Doctor = require("../models/Doctor");
+const Doctor = require("../models/doctor");
 const Patient = require("../models/patient");
-const Consent = require("../models/Consent");
-const MedicalRecord = require("../models/MedicalRecord");
+const Consent = require("../models/consent");
+const MedicalRecord = require("../models/medicalRecord");
 
 
 // =====================================
